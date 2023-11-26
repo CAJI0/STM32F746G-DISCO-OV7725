@@ -99,7 +99,9 @@ void    BSP_CAMERA_ErrorCallback(void);
 void    BSP_CAMERA_ContrastBrightnessConfig(uint32_t contrast_level, uint32_t brightness_level);
 void    BSP_CAMERA_BlackWhiteConfig(uint32_t Mode);
 void    BSP_CAMERA_ColorEffectConfig(uint32_t Effect);
-void BSP_CAMERA_FlipConfig(uint32_t flip, uint8_t enable);
+void    BSP_CAMERA_FlipConfig(uint32_t flip, uint8_t enable);
+void    BSP_CAMERA_TestPatternConfig(uint8_t enable);
+
    
 /* These functions can be modified in case the current settings (e.g. DMA stream)
    need to be changed for specific application needs */

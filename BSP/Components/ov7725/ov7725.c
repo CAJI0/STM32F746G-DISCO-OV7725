@@ -201,8 +201,7 @@ void ov7725_Config(uint16_t DeviceAddr, uint32_t feature, uint32_t value,
       CAMERA_IO_Write(DeviceAddr, UFIX, 0x80);
       CAMERA_IO_Write(DeviceAddr, VFIX, 0xC0);
     }
-
-      break;
+    break;
   }
 
   case CAMERA_FLIP_EFFECT:
@@ -229,6 +228,21 @@ void ov7725_Config(uint16_t DeviceAddr, uint32_t feature, uint32_t value,
       CAMERA_IO_Write(DeviceAddr, COM3, value);
     }
   }
+  break;
+  case CAMERA_TEST_PATTERN:
+  {
+    uint8_t reg_value = CAMERA_IO_Read(DeviceAddr, COM3);
+    uint8_t enable = value == 0 ? 0 : 1;
+    // Enable colorbar test pattern output
+    reg_value = COM3_SET_CBAR(reg_value, enable);
+    CAMERA_IO_Write(DeviceAddr, COM3, reg_value);
+
+    // Enable DSP colorbar output
+    reg_value = CAMERA_IO_Read(DeviceAddr, DSP_CTRL3);
+    reg_value = DSP_CTRL3_SET_CBAR(reg_value, enable);
+    CAMERA_IO_Write(DeviceAddr, DSP_CTRL3, reg_value);
+  }
+  break;
   default:
   {
     break;

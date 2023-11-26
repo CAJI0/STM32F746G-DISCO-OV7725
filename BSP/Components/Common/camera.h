@@ -93,6 +93,7 @@ typedef struct
 #define CAMERA_BLACK_WHITE              0x01   /* Camera black white feature           */
 #define CAMERA_COLOR_EFFECT             0x03   /* Camera color effect feature          */
 #define CAMERA_FLIP_EFFECT              0x04   /* Camera image flip feature */
+#define CAMERA_TEST_PATTERN             0x05   /* Camera color bar test pattern feature */
 
 #define CAMERA_BRIGHTNESS_LEVEL0        0x00   /* Brightness level -2         */
 #define CAMERA_BRIGHTNESS_LEVEL1        0x01   /* Brightness level -1         */

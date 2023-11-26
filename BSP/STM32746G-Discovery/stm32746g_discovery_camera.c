@@ -407,6 +407,21 @@ void BSP_CAMERA_FlipConfig(uint32_t flip, uint8_t enable)
   }
 }
 
+/** @brief  Configures the camera color bar test pattern.
+* @param  enable: State
+*          This parameter can be one of the following values:
+*            @arg  ENABLE: enable color bar
+*            @arg  DISABLE: disable color bar
+* @retval None
+*/
+void BSP_CAMERA_TestPatternConfig(uint8_t enable)
+{
+  if(camera_drv->Config != NULL)
+  {
+    camera_drv->Config(CameraHwAddress, CAMERA_TEST_PATTERN, enable, 0);
+  }
+}
+
 
 /**
   * @brief  Get the capture size in pixels unit.

@@ -29,8 +29,9 @@ static const uint8_t OV7725_QVGA[][2] = {
   {COM7, COM7_RES_QVGA | COM7_FMT_RGB | COM7_FMT_RGB565},
   {COM4, COM4_PLL_4x},
   {CLKRC, 0x04}, // 0x02 - for 20 FPS, 0x04 - for 30 FPS
-  {COM3, COM3_VFLIP|COM3_MIRROR},
-  {COM9, 0x4E},
+  {COM3, 0x00}, // Bit[4] for RGB mode must be disabled
+  {COM9, 0x4E}, // Enable invalid frame drop
+  {COM5, 0xE5}, // Enable night mode
 
   {HSTART,    0x3f},
   {HSIZE,     0x50},
@@ -202,11 +203,36 @@ void ov7725_Config(uint16_t DeviceAddr, uint32_t feature, uint32_t value,
     }
 
       break;
+  }
+
+  case CAMERA_FLIP_EFFECT:
+  {
+    uint8_t enable = brightness_value != 0;
+    if (value == CAMERA_FLIP_EFFECT_VERTICAL) {
+      uint8_t value = CAMERA_IO_Read(DeviceAddr, COM3);
+      if (enable) {
+        value |= COM3_VFLIP;
+      }
+      else {
+        value &= ~COM3_VFLIP;
+      }
+      CAMERA_IO_Write(DeviceAddr, COM3, value);
     }
+    else if (value == CAMERA_FLIP_EFFECT_HORIZONTAL) {
+      uint8_t value = CAMERA_IO_Read(DeviceAddr, COM3);
+      if (enable) {
+        value |= COM3_MIRROR;
+      }
+      else {
+        value &= ~COM3_MIRROR;
+      }
+      CAMERA_IO_Write(DeviceAddr, COM3, value);
+    }
+  }
   default:
-    {
-      break;
-    }
+  {
+    break;
+  }
   }
 }
 

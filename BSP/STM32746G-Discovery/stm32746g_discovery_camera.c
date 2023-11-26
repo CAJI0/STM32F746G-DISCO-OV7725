@@ -388,6 +388,26 @@ void BSP_CAMERA_ColorEffectConfig(uint32_t Effect)
   }  
 }
 
+/** @brief  Configures the camera flip state.
+* @param  flip: Flip effect
+*          This parameter can be one of the following values:
+*            @arg  CAMERA_FLIP_EFFECT_VERTICAL
+*            @arg  CAMERA_FLIP_EFFECT_HORIZONTAL
+* @param  enable: State
+*          This parameter can be one of the following values:
+*            @arg  ENABLE: for enabling selected flip effect
+*            @arg  DISABLE: for disabling selected flip effect
+* @retval None
+*/
+void BSP_CAMERA_FlipConfig(uint32_t flip, uint8_t enable)
+{
+  if(camera_drv->Config != NULL)
+  {
+    camera_drv->Config(CameraHwAddress, CAMERA_FLIP_EFFECT, flip, enable);
+  }
+}
+
+
 /**
   * @brief  Get the capture size in pixels unit.
   * @param  resolution: the current resolution.

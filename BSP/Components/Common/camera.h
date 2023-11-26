@@ -92,6 +92,7 @@ typedef struct
 #define CAMERA_CONTRAST_BRIGHTNESS      0x00   /* Camera contrast brightness features  */
 #define CAMERA_BLACK_WHITE              0x01   /* Camera black white feature           */
 #define CAMERA_COLOR_EFFECT             0x03   /* Camera color effect feature          */
+#define CAMERA_FLIP_EFFECT              0x04   /* Camera image flip feature */
 
 #define CAMERA_BRIGHTNESS_LEVEL0        0x00   /* Brightness level -2         */
 #define CAMERA_BRIGHTNESS_LEVEL1        0x01   /* Brightness level -1         */
@@ -115,6 +116,9 @@ typedef struct
 #define CAMERA_COLOR_EFFECT_GREEN       0x02   /* Green effect                */
 #define CAMERA_COLOR_EFFECT_RED         0x03   /* Red effect                  */
 #define CAMERA_COLOR_EFFECT_ANTIQUE     0x04   /* Antique effect              */
+
+#define CAMERA_FLIP_EFFECT_VERTICAL     0x00
+#define CAMERA_FLIP_EFFECT_HORIZONTAL   0x01
 
 /**
   * @}

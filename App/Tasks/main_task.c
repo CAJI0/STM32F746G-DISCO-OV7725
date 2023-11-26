@@ -61,6 +61,9 @@ void vMainTask(void const * argument)
 	DebugDesc.write = DebugWrite;
 	Debug_Init(&DebugDesc);
 
+
+  char linebuf[100];
+
 	PRINT("Startup\n");
 
 #if CAMERA_RESOLUTION == CAMERA_R320x240
@@ -71,6 +74,8 @@ void vMainTask(void const * argument)
 	PRINT("CAMERA INIT: %s\n", STATUS_STR(cam_init_status));
 
 	if (cam_init_status == CAMERA_OK) {
+	  BSP_CAMERA_FlipConfig(CAMERA_FLIP_EFFECT_VERTICAL, ENABLE);
+    BSP_CAMERA_FlipConfig(CAMERA_FLIP_EFFECT_HORIZONTAL, ENABLE);
 	  BSP_CAMERA_ContinuousStart(CAMERA_FRAMEBUFFER);
 	}
 	else if (cam_init_status == CAMERA_NOT_DETECTED) {
@@ -78,15 +83,14 @@ void vMainTask(void const * argument)
 	}
 
 	uint32_t PreviousWakeTime = osKernelSysTick();
-	uint32_t cnt = 0;
 	uint32_t prev_cam_lines_cnt = 0;
+
 	for(;;) {
 		osDelayUntil(&PreviousWakeTime, 1000);
 		if (cam_init_status == CAMERA_OK) {
-		  char buf[100];
-		  snprintf(buf, 100, "FPS: %d, LINES %d", cam_vsync_cnt,  cam_lines_cnt-prev_cam_lines_cnt);
+		  snprintf(linebuf, 100, "FPS: %d, LINES %d   ", cam_vsync_cnt,  cam_lines_cnt-prev_cam_lines_cnt);
 		  PRINT("VSYNC: %d %d, LINES %d\n", cam_vsync_cnt, cam_frames_cnt, cam_lines_cnt-prev_cam_lines_cnt);
-		  BSP_LCD_DisplayStringAtLine(0, buf);
+		  BSP_LCD_DisplayStringAtLine(0, linebuf);
 	    cam_vsync_cnt = 0;
 	    prev_cam_lines_cnt=cam_lines_cnt;
 		}

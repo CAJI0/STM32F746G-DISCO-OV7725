@@ -1,13 +1,13 @@
-
-
+#include "main.h"
 #include "FreeRTOS.h"
 #include "task.h"
-#include "main.h"
 #include "cmsis_os.h"
 
 #include "stm32746g_discovery.h"
 #include "stm32746g_discovery_camera.h"
 #include "stm32746g_discovery_lcd.h"
+
+#include <stdio.h>
 
 #include "debug.h"
 
@@ -73,24 +73,28 @@ void vMainTask(void const * argument)
 	uint8_t cam_init_status = BSP_CAMERA_Init(CAMERA_RESOLUTION); // CAMERA_R320x240  CAMERA_R480x272
 	PRINT("CAMERA INIT: %s\n", STATUS_STR(cam_init_status));
 
-	if (cam_init_status == CAMERA_OK) {
+	if (cam_init_status == CAMERA_OK)
+	{
 	  BSP_CAMERA_FlipConfig(CAMERA_FLIP_EFFECT_VERTICAL, ENABLE);
     BSP_CAMERA_FlipConfig(CAMERA_FLIP_EFFECT_HORIZONTAL, ENABLE);
-	  BSP_CAMERA_ContinuousStart(CAMERA_FRAMEBUFFER);
+	  BSP_CAMERA_ContinuousStart((uint8_t *)CAMERA_FRAMEBUFFER);
 	}
-	else if (cam_init_status == CAMERA_NOT_DETECTED) {
-	  BSP_LCD_DisplayStringAtLine(0, "CAMERA NOT FOUND");
+	else if (cam_init_status == CAMERA_NOT_DETECTED)
+	{
+	  BSP_LCD_DisplayStringAtLine(0, (uint8_t *)"CAMERA NOT FOUND");
 	}
 
 	uint32_t PreviousWakeTime = osKernelSysTick();
 	uint32_t prev_cam_lines_cnt = 0;
 
-	for(;;) {
+	for(;;)
+	{
 		osDelayUntil(&PreviousWakeTime, 1000);
-		if (cam_init_status == CAMERA_OK) {
-		  snprintf(linebuf, 100, "FPS: %d, LINES %d   ", cam_vsync_cnt,  cam_lines_cnt-prev_cam_lines_cnt);
+		if (cam_init_status == CAMERA_OK)
+		{
+		  snprintf(linebuf, sizeof(linebuf), "FPS: %lu, LINES %lu   ", cam_vsync_cnt,  cam_lines_cnt-prev_cam_lines_cnt);
 		  PRINT("VSYNC: %d %d, LINES %d\n", cam_vsync_cnt, cam_frames_cnt, cam_lines_cnt-prev_cam_lines_cnt);
-		  BSP_LCD_DisplayStringAtLine(0, linebuf);
+		  BSP_LCD_DisplayStringAtLine(0, (uint8_t*)linebuf);
 	    cam_vsync_cnt = 0;
 	    prev_cam_lines_cnt=cam_lines_cnt;
 		}
